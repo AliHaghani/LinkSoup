@@ -19,17 +19,7 @@ function login(){
 // we would probably save a profile when we register new users on our site
 // we could also read the profile to see if it's null
 // here we will just simulate this with an isNewUser boolean
-var isNewUser = true;
-ref.onAuth(function(authData) {
-  if (authData && isNewUser) {
-    // save the user's profile into the database so we can list users,
-    // use them in Security and Firebase Rules, and show profiles
-    ref.child("users").child(authData.uid).set({
-      provider: authData.provider,
-      name: getName(authData)
-    });
-  }
-});
+
 // find a suitable name based on the meta info given by each provider
 function getName(authData) {
   switch(authData.provider) {
@@ -46,5 +36,18 @@ function submitLink(currentUrl){
     var userNameSpace = userData.facebook.displayName;
     var userName = userNameSpace.replace(' ', '');
     var userRef = ref.child("users/" + userName + "/links");
-    userRef.update({link: currentUrl.href});
+    userRef.push({link: currentUrl.href});
 }
+
+// Get a database reference to our posts
+var userLinks = new Firebase("https://linksoup.firebaseio.com/users/" + username + "/links/");
+
+userLinks.once("value", function(snapshot) {
+  // The callback function will get called twice, once for "fred" and once for "barney"
+  snapshot.forEach(function(childSnapshot) {
+    // key will be "fred" the first time and "barney" the second time
+    var key = childSnapshot.key();
+    // childData will be the actual contents of the child
+    var childData = childSnapshot.val();
+  });
+});
