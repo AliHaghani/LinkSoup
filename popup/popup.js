@@ -32,34 +32,49 @@ function getName(authData) {
   }
 }
 
+var currUserName;
+
 function submitLink(currentUrl){
     var userNameSpace = userData.facebook.displayName;
     var userName = userNameSpace.replace(' ', '');
     var userRef = ref.child("users/" + userName + "/links");
     userRef.push({link: currentUrl.href});
+    currUserName = userName;
 }
 
 // Get a database reference to our posts
-var userLinks = new Firebase("https://linksoup.firebaseio.com/users/" + username + "/links/");
+var userLinks = new Firebase("https://linksoup.firebaseio.com/users/EricStroczynski/links");
 
 function getLinks() {
+    
     userLinks.once("value", function(snapshot) {
-  // The callback function will get called twice, once for "fred" and once for "barney"
-  snapshot.forEach(function(childSnapshot) {
-    // key will be "fred" the first time and "barney" the second time
-    var key = childSnapshot.key();
-    // childData will be the actual contents of the child
-    var childData = childSnapshot.val();
-    // create divs out of each link
-      var linkDiv = document.createElement('div');
-      linkDiv.innerHTML = "<a href='" + childData + "'>" + childData + "</a>";
-      document.getElementById('links').innerHTML += linkDiv;
-  });
-    });
-}
+      snapshot.forEach(function(childSnapshot) {
+          childSnapshot.forEach(function(childChildSnapshot){
+            var childData = childChildSnapshot.val();
+            var linkDiv = "<div name='link-div'><hr><a href='" + childData + "'>" + childData + "</a></div>";
+            document.getElementById('links').innerHTML += linkDiv;
+          });
+       });
+   });
+};
 
 
-function() {if (location.pathname.substring(1) == "index.html"){
-    getLinks();
-}
-           }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
