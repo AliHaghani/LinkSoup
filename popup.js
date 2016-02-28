@@ -53,10 +53,6 @@ function getName(authData) {
   }
 }
 
-<<<<<<< HEAD
-=======
-var currUserName;
-
 document.addEventListener('DOMContentLoaded', function() {
     var addLink = document.getElementById('addLink');
     // onClick's logic below:
@@ -65,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
->>>>>>> 72edbb33802a3326b4a02c8e12f387fb47f21276
 function submitLink(currentUrl){
     var userNameSpace = userData.facebook.displayName;
     var userName = userNameSpace.replace(' ', '');
@@ -76,23 +71,18 @@ function submitLink(currentUrl){
 // Get a database reference to our posts
 var userLinks = new Firebase("https://linksoup.firebaseio.com/users/EricStroczynski/links");//need to replace EricStroczynski with userName somehow
 
-function getLinks() {
+document.addEventListener('DOMContentLoaded', function(){
     userLinks.once("value", function(snapshot) {
       snapshot.forEach(function(childSnapshot) {
           childSnapshot.forEach(function(childChildSnapshot){
             var childKey = childChildSnapshot.key();
             var childData = childChildSnapshot.val();
-            var linkDiv = "<div name='link-div'><button onclick='removeLink(" + childSnapshot + ");'>Remove</button><a href='" + childData + "'>" + childData + "</a><hr></div>";
+            var linkDiv = "<div name='link-div'><a href='" + childData + "'>" + childData + "</a><hr></div>";
             document.getElementById('links').innerHTML += linkDiv;
           });
        });
    });
-};
-
-function removeLink(data) {
-    userLinks.$remove();
-};
-
+});
 
 
 
