@@ -8,6 +8,22 @@ UserData.prototype.getUserName = function() {
     return this.userData;
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    var login = document.getElementById('login');
+    // onClick's logic below:
+    login.addEventListener('click', function() {
+        // login();
+        ref.authWithOAuthPopup("facebook", function(error, authData) {
+            if (error) {
+                console.log("Login Failed!", error);
+            } else {
+                console.log("Authenticated successfully with payload:", authData);
+                userData = authData;
+            }
+    });        
+    });
+});
+
 function login(){
     ref.authWithOAuthPopup("facebook", function(error, authData) {
         if (error) {
@@ -37,6 +53,19 @@ function getName(authData) {
   }
 }
 
+<<<<<<< HEAD
+=======
+var currUserName;
+
+document.addEventListener('DOMContentLoaded', function() {
+    var addLink = document.getElementById('addLink');
+    // onClick's logic below:
+    addLink.addEventListener('click', function() {
+        submitLink(window.location);
+    });
+});
+
+>>>>>>> 72edbb33802a3326b4a02c8e12f387fb47f21276
 function submitLink(currentUrl){
     var userNameSpace = userData.facebook.displayName;
     var userName = userNameSpace.replace(' ', '');
