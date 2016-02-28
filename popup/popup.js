@@ -57,3 +57,9 @@ function getLinks() {
   });
     });
 }
+
+
+function() {if (location.pathname.substring(1) == "index.html"){
+    getLinks();
+}
+           }
