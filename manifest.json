@@ -10,7 +10,7 @@
    "default_popup": "popup.html"
   },
     "background": {
-        "scripts": ["popup.js"]
+        "scripts": ["popup.js", "firebase.js", "angularfire.min.js"]
     },
     
   "permissions": [
