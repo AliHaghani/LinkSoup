@@ -3,6 +3,22 @@ var ref = new Firebase("https://linksoup.firebaseio.com");
 
 var userData;
 
+document.addEventListener('DOMContentLoaded', function() {
+    var login = document.getElementById('login');
+    // onClick's logic below:
+    login.addEventListener('click', function() {
+        // login();
+        ref.authWithOAuthPopup("facebook", function(error, authData) {
+            if (error) {
+                console.log("Login Failed!", error);
+            } else {
+                console.log("Authenticated successfully with payload:", authData);
+                userData = authData;
+            }
+    });        
+    });
+});
+
 function login(){
     ref.authWithOAuthPopup("facebook", function(error, authData) {
         if (error) {
@@ -33,6 +49,14 @@ function getName(authData) {
 }
 
 var currUserName;
+
+document.addEventListener('DOMContentLoaded', function() {
+    var addLink = document.getElementById('addLink');
+    // onClick's logic below:
+    addLink.addEventListener('click', function() {
+        submitLink(window.location);
+    });
+});
 
 function submitLink(currentUrl){
     var userNameSpace = userData.facebook.displayName;
