@@ -1,7 +1,12 @@
 
 var ref = new Firebase("https://linksoup.firebaseio.com");
 
-var userData;
+function UserData(data){
+    this.userData = data;
+}
+UserData.prototype.getUserName = function() {
+    return this.userData;
+}
 
 function login(){
     ref.authWithOAuthPopup("facebook", function(error, authData) {
@@ -9,7 +14,7 @@ function login(){
         console.log("Login Failed!", error);
         } else {
             console.log("Authenticated successfully with payload:", authData);
-            userData = authData;
+            UserData(authData);
         }
     });
 };
@@ -32,30 +37,31 @@ function getName(authData) {
   }
 }
 
-var currUserName;
-
 function submitLink(currentUrl){
     var userNameSpace = userData.facebook.displayName;
     var userName = userNameSpace.replace(' ', '');
     var userRef = ref.child("users/" + userName + "/links");
     userRef.push({link: currentUrl.href});
-    currUserName = userName;
 }
 
 // Get a database reference to our posts
-var userLinks = new Firebase("https://linksoup.firebaseio.com/users/EricStroczynski/links");
+var userLinks = new Firebase("https://linksoup.firebaseio.com/users/EricStroczynski/links");//need to replace EricStroczynski with userName somehow
 
 function getLinks() {
-    
     userLinks.once("value", function(snapshot) {
       snapshot.forEach(function(childSnapshot) {
           childSnapshot.forEach(function(childChildSnapshot){
+            var childKey = childChildSnapshot.key();
             var childData = childChildSnapshot.val();
-            var linkDiv = "<div name='link-div'><hr><a href='" + childData + "'>" + childData + "</a></div>";
+            var linkDiv = "<div name='link-div'><button onclick='removeLink(" + childSnapshot + ");'>Remove</button><a href='" + childData + "'>" + childData + "</a><hr></div>";
             document.getElementById('links').innerHTML += linkDiv;
           });
        });
    });
+};
+
+function removeLink(data) {
+    userLinks.$remove();
 };
 
 
